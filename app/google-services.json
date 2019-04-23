@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "848188957710",
+    "firebase_url": "https://oneessaygit.firebaseio.com",
+    "project_id": "oneessaygit",
+    "storage_bucket": "oneessaygit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848188957710:android:0577161094a2af26",
+        "android_client_info": {
+          "package_name": "com.example.oneessay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848188957710-v80dvsdsfc3ia3hm7cqfr3paafjg8oa2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFXOPDguvXIFo2pyJv-HPV46zbk8Elh-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848188957710-v80dvsdsfc3ia3hm7cqfr3paafjg8oa2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
