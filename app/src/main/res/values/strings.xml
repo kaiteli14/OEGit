@@ -9,7 +9,6 @@
         <item>Evolution of mobile phones</item>
         <item>Internet of Things</item>
         <item>Scope of Artificial Intelligence</item>
-
     </string-array>
     <string-array name="Professor">
         <item>Dr Elizabeth Diaz</item>
@@ -17,5 +16,10 @@
         <item>Dr John Rob</item>
         <item>Dr George Lyles</item>
         <item>Dr Austin Rose</item>
+    </string-array>
+    <string-array name="University">
+        <item>University of Texas at Arlington</item>
+        <item>University of Texas at Dallas</item>
+        <item>University of Texas at Austin</item>
     </string-array>
 </resources>
