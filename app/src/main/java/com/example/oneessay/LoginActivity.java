@@ -68,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        initForgotPasswordBtn();
+
 
     }
 
@@ -127,5 +129,20 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return res;
+    }
+
+    private void initForgotPasswordBtn(){
+        TextView Btn = findViewById(R.id.textView2);
+        Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
