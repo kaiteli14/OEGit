@@ -1,5 +1,6 @@
 package com.example.oneessay;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -160,6 +163,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }.start();*/
 
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
 
     private void initMainActivity() {
         if (!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail())) {
@@ -253,6 +263,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.logout) {
+
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("ONE ESSAY");
+            builder.setMessage("Are you sure you want to log out?");
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    dialog.dismiss();
+                }
+
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+
+            android.app.AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }

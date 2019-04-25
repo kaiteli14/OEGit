@@ -73,6 +73,8 @@ public class DisplayTopicActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void openDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayTopicActivity.this);
