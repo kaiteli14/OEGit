@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class DisplayTopicActivity extends AppCompatActivity {
 
     Student firstStudent;
 
+    List<String> activityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,9 @@ public class DisplayTopicActivity extends AppCompatActivity {
 
         essayList = new ArrayList<String>();
 
-        updateList();
+        activityList = new ArrayList<String>();
+
+        final Button startEssayBtn = findViewById(R.id.startessaybutton);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +76,42 @@ public class DisplayTopicActivity extends AppCompatActivity {
                 openDialog();
             }
         });
+
+        LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+
+                activityList.clear();
+                while (iterator.hasNext()) {
+                    DataSnapshot s = iterator.next();
+                    activity = s.getValue(EssayActivity.class);
+                    if (activity.getStatus())
+                        activityList.add(activity.getEssaytopic());
+                }
+                if(activityList.size() >= 1){
+                    startEssayBtn.setEnabled(false);
+                    toastMessage("An activity is already in progress, \"Start Essay Button\" disabled");
+                }else{
+                    startEssayBtn.setEnabled(true);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateList();
+    }
 
     private void openDialog() {
 
@@ -310,5 +348,8 @@ public class DisplayTopicActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
 }
