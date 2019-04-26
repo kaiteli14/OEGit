@@ -8,8 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +40,18 @@ public class ProfessorHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professor_home_page);
+
+
+        Button button = findViewById(R.id.phpbackbutton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfessorHomePageActivity.this, LoginActivity.class);
+                //intent.putExtra();
+                startActivity(intent);
+            }
+        });
+
 
         studentListView = (ListView) findViewById(R.id.studentlist);
         //new Jolly(ProfessorHomePageActivity.this).execute(10);
@@ -94,6 +109,15 @@ public class ProfessorHomePageActivity extends AppCompatActivity {
                     activityListView.setAdapter(adapter);
                 }
 
+
+                activityListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getApplicationContext(), "You have clicked the topic", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override

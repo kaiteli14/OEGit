@@ -61,6 +61,17 @@ public class DisplayTopicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_topic);
 
+        Button button = findViewById(R.id.backbutton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayTopicActivity.this, ProfessorHomePageActivity.class);
+                //intent.putExtra();
+                startActivity(intent);
+            }
+        });
+
+
         essayListView = (ListView) findViewById(R.id.essaytopicsListView);
 
         essayList = new ArrayList<String>();
