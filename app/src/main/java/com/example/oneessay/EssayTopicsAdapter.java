@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class EssayTopicsAdapter extends ArrayAdapter<String> {
     int loc=0;
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -38,7 +39,6 @@ public class EssayTopicsAdapter extends ArrayAdapter<String> {
         rowView = (rowView == null) ? inflater.inflate(R.layout.row_essaytopic,parent,false) : rowView ;
 
         essayText = (TextView) rowView.findViewById(R.id.essayrow_topic);
-
         essayText.setText(values[position]);
 
         essayText.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +65,15 @@ public class EssayTopicsAdapter extends ArrayAdapter<String> {
             }
         });
 
+
+        final Button delete = (Button) rowView.findViewById(R.id.deletetopicbutton);
+        delete.setTag(position);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyDataSetChanged();
+            }
+        });
 
         notifyDataSetChanged();
 

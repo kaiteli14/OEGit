@@ -147,7 +147,11 @@ public class DisplayTopicActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+               String topic = essaytopic.getText().toString();
+                if (topic.matches("")) {
+                    Toast.makeText(DisplayTopicActivity.this, "You did not enter a valid topic", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 essayTopicsRef = LoginActivity.mRootRef.child("essay").child("" + count);
 
                 essayTopicsRef.child("topic").setValue(essaytopic.getText().toString());
