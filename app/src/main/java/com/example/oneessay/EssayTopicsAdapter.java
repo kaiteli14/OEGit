@@ -66,6 +66,7 @@ public class EssayTopicsAdapter extends ArrayAdapter<String> {
         });
 
 
+        //FOR REMOVING THE TOPIC
         final Button delete = (Button) rowView.findViewById(R.id.deletetopicbutton);
         delete.setTag(position);
         delete.setOnClickListener(new View.OnClickListener() {
