@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
 
         initForgotPasswordBtn();
 
+        initCancelBtn();
+
 
     }
 
@@ -80,9 +82,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickLogin(View view) {
 
-        User = (EditText) findViewById(R.id.editText);
+        User = (EditText) findViewById(R.id.emailEditText);
         String user = User.getText().toString();
-        Password = (EditText) findViewById(R.id.editText2);
+        Password = (EditText) findViewById(R.id.passwordEditText);
         String password = Password.getText().toString();
         Boolean result = validateEmptyFields(user, password);
 
@@ -138,6 +140,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,ForgotPassword.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void initCancelBtn(){
+        Button cancelBtn = findViewById(R.id.cancelBtn);
+        final EditText email = findViewById(R.id.emailEditText);
+        final EditText password = findViewById(R.id.passwordEditText);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email.setText("");
+                password.setText("");
+                toastMessage("E-mail and passowrd cleared!");
+
             }
         });
     }

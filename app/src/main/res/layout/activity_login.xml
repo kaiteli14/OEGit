@@ -45,7 +45,7 @@
                 android:textSize="35dp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/emailEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageView"
@@ -55,7 +55,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="46dp"
                 android:focusable="true"
-                android:hint="Enter Name"
+                android:hint="Enter Email"
                 android:textColorHighlight="#ff7eff15"
                 android:textColorHint="#ffff25e6" />
 
@@ -68,12 +68,12 @@
                 android:src="@drawable/logo" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/passwordEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editText"
-                android:layout_alignEnd="@+id/editText"
-                android:layout_alignRight="@+id/editText"
+                android:layout_below="@+id/emailEditText"
+                android:layout_alignEnd="@+id/emailEditText"
+                android:layout_alignRight="@+id/emailEditText"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:ems="10"
@@ -85,7 +85,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editText2"
+                android:layout_below="@+id/passwordEditText"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:text="Forgot Password?" />
@@ -112,7 +112,7 @@
                 android:text="login" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/cancelBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button"

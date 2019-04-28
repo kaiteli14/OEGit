@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +23,7 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private void retrievePassword(){
-        final EditText emailText = findViewById(R.id.editText2);
+        final EditText emailText = findViewById(R.id.passwordEditText);
         Button okBtn = findViewById(R.id.ForgotPasswordButton);
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
