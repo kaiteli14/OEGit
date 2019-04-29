@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(!LoginActivity.currentUser.getEmail().equalsIgnoreCase("p@gmail.com")) {
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.add).setVisible(false);
+        }
+
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
 
@@ -163,11 +168,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        }.start();
 
     }
+    private void hideItem()
+    {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+
+            inflater.inflate(R.menu.main, menu);
+
+
         return true;
     }
 
