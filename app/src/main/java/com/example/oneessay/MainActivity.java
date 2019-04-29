@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView essaytopic, currentstudent, nextstudent, nextinline, time, noactiveessay;
     EditText essaycontent;
 
+    CountDownTimer myCountDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,86 +91,85 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             noactiveessay.setVisibility(View.VISIBLE);
             container.setVisibility(View.GONE);
         }
-
-        //System.out.println(LoginActivity.currentUser.getEmail()+" "+activity.getCurrentstudent().getEmail());
-
-        /*if(!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail()))
-        {
-            essaycontent.setEnabled(false);
-            LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-
-                    while(iterator.hasNext()){
-                        DataSnapshot s = iterator.next();
-                        updateActivity = s.getValue(EssayActivity.class);
-                        if(updateActivity.getStatus())
-                            break;
-                    }
-
-                    time.setText(updateActivity.getTime());
-                    essaycontent.setText(updateActivity.getEssaycontent());
-
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }
-
-        else {
-
-            essaycontent.setEnabled(true);
-
-            new CountDownTimer(300000, 1000) {
-
-                public void onTick(long millisUntilFinished) {
-                    time.setText((millisUntilFinished / 1000) + "");
-
-                    essayActivityRef = LoginActivity.mRootRef.child("activity")
-                            .child(activity.getId());
-
-                    essayActivityRef.child("time").setValue((millisUntilFinished / 1000) + "");
-                    essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
-                }
-
-                public void onFinish() {
-                    essaycontent.setEnabled(false);
-
-                    essayActivityRef = LoginActivity.mRootRef.child("activity")
-                            .child(activity.getId());
-                    essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
-
-                    if(activity.getNextstudents().size()>0) {
-                        essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
-                        activity.getNextstudents().remove(0);
-                        essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
-                        //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                        //startActivity(intent);
-
-                    }
-                    else
-                    {
-                        essayActivityRef.child("status").setValue(Boolean.FALSE);
-                        //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                        //startActivity(intent);
-
-                    }
-                }
-            }.start();*/
+////Archived code
+//   System.out.println(LoginActivity.currentUser.getEmail()+" "+activity.getCurrentstudent().getEmail());
+//    if(!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail()))
+//    {
+//        essaycontent.setEnabled(false);
+//        LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+//
+//                while(iterator.hasNext()){
+//                    DataSnapshot s = iterator.next();
+//                    updateActivity = s.getValue(EssayActivity.class);
+//                    if(updateActivity.getStatus())
+//                        break;
+//                }
+//
+//                time.setText(updateActivity.getTime());
+//                essaycontent.setText(updateActivity.getEssaycontent());
+//
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//    }
+//
+//    else {
+//
+//        essaycontent.setEnabled(true);
+//
+//        new CountDownTimer(300000, 1000) {
+//
+//            public void onTick(long millisUntilFinished) {
+//                time.setText((millisUntilFinished / 1000) + "");
+//
+//                essayActivityRef = LoginActivity.mRootRef.child("activity")
+//                        .child(activity.getId());
+//
+//                essayActivityRef.child("time").setValue((millisUntilFinished / 1000) + "");
+//                essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
+//            }
+//
+//            public void onFinish() {
+//                essaycontent.setEnabled(false);
+//
+//                essayActivityRef = LoginActivity.mRootRef.child("activity")
+//                        .child(activity.getId());
+//                essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
+//
+//                if(activity.getNextstudents().size()>0) {
+//                    essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
+//                    activity.getNextstudents().remove(0);
+//                    essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
+//                    //Intent intent = new Intent(MainActivity.this,MainActivity.class);
+//                    //startActivity(intent);
+//
+//                }
+//                else
+//                {
+//                    essayActivityRef.child("status").setValue(Boolean.FALSE);
+//                    //Intent intent = new Intent(MainActivity.this,MainActivity.class);
+//                    //startActivity(intent);
+//
+//                }
+//            }
+//        }.start();
 
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
     }
-
 
     private void initMainActivity() {
         if (!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail())) {
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             essaycontent.setEnabled(true);
 
-            new CountDownTimer(300000, 1000) {
+            myCountDownTimer = new CountDownTimer(15000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     time.setText((millisUntilFinished / 1000) + "");
@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void onClickSubmit(View view) {
+        myCountDownTimer.cancel();
         essaycontent.setEnabled(false);
         essayActivityRef = LoginActivity.mRootRef.child("activity")
                 .child(activity.getId());
@@ -259,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
