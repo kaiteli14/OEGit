@@ -102,7 +102,7 @@ public class DisplayTopicActivity extends AppCompatActivity {
                 }
                 if(activityList.size() >= 1){
                     startEssayBtn.setEnabled(false);
-                    toastMessage("An activity is already in progress, \"Start Essay Button\" disabled");
+//                    toastMessage("An activity is already in progress, \"Start Essay Button\" disabled");
                 }else{
                     startEssayBtn.setEnabled(true);
                 }

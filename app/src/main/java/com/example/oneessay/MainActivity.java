@@ -177,7 +177,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
+                    if(LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail())){
+                        essaycontent.setEnabled(true);
+                    }
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
 
                     while (iterator.hasNext()) {
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             essaycontent.setEnabled(true);
 
-            myCountDownTimer = new CountDownTimer(300000, 1000) {
+            myCountDownTimer = new CountDownTimer(90000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     time.setText((millisUntilFinished / 1000) + "");
