@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             essaycontent.setEnabled(true);
 
-            myCountDownTimer = new CountDownTimer(15000, 1000) {
+            myCountDownTimer = new CountDownTimer(300000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     time.setText((millisUntilFinished / 1000) + "");
