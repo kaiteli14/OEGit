@@ -275,7 +275,7 @@ public class DisplayTopicActivity extends AppCompatActivity {
                 essayTopicsRef.child("status").setValue(Boolean.TRUE);
                 essayTopicsRef.child("currentstudent").setValue(firstStudent);
                 essayTopicsRef.child("nextstudents").setValue(studentObjectList);
-                essayTopicsRef.child("time").setValue("300000");
+                essayTopicsRef.child("time").setValue("00:00:00");
 
                 Intent intent = new Intent(DisplayTopicActivity.this, MainActivity.class);
 

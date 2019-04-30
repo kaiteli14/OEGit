@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -220,7 +222,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             myCountDownTimer = new CountDownTimer(90000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    time.setText((millisUntilFinished / 1000) + "");
+
+                    NumberFormat f = new DecimalFormat("00");
+                    long hour = (millisUntilFinished / 3600000) % 24;
+                    long min = (millisUntilFinished / 60000) % 60;
+                    long sec = (millisUntilFinished / 1000) % 60;
+                    String temp = f.format(hour) + ":" + f.format(min) + ":" + f.format(sec);
+
+                    time.setText(temp);
 
                     essayActivityRef = LoginActivity.mRootRef.child("activity")
                             .child(activity.getId());
