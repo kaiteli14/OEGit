@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         displayProfile();
         //continuebutton= (Button) view.findViewById(R.id.continuebutton);
-        camerabutton = (ImageView) findViewById(R.id.profileimage);
+        /*camerabutton = (ImageView) findViewById(R.id.profileimage);
         camerabutton.setEnabled(true);
         camerabutton.setVisibility(View.VISIBLE);
         camerabutton.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                   DialogFragment newFragment = new ImageOptionsLearner();
 //                   newFragment.show(getActivity().getSupportFragmentManager(), "images");
             }
-        });
+        });*/
 
     }
     public boolean onCreateOptionsMenu(Menu menu) {
