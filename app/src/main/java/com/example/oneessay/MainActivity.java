@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView essaytopic, currentstudent, nextstudent, nextinline, time, noactiveessay;
     EditText essaycontent;
 
+    CountDownTimer timer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             essaycontent.setEnabled(true);
 
-            new CountDownTimer(300000, 1000) {
+            timer = new CountDownTimer(60000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     time.setText((millisUntilFinished / 1000) + "");
@@ -208,10 +210,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    // System.out.println(LoginActivity.currentUser.getEmail()+" "+activity.getCurrentstudent().getEmail());
-
     public void onClickSubmit(View view) {
-        //essaycontent.setEnabled(false);
+
         essayActivityRef = LoginActivity.mRootRef.child("activity")
                 .child(activity.getId());
         essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
@@ -220,7 +220,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
             activity.getNextstudents().remove(0);
             essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
-
+            essayActivityRef.child("time").setValue(0 + "");
+            timer.cancel();
             Intent intent = new Intent(MainActivity.this,MainActivity.class);
             startActivity(intent);
             finish();
