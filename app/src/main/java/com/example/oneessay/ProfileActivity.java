@@ -160,7 +160,8 @@ public class ProfileActivity extends AppCompatActivity {
                     if (student.getImage().equalsIgnoreCase("none")) {
                         // do nothing
                     } else {
-                        downloadCamera();
+                        //downloadCamera();
+                        new GetImage(ProfileActivity.this).execute(student.getImage());
 
                     }
                     name.setText(student.getName());
@@ -188,12 +189,15 @@ public class ProfileActivity extends AppCompatActivity {
                 Bundle bundle = data.getExtras();
                 bitmap = (Bitmap) bundle.get("data");
                 // camerabutton.setImageBitmap(bitmap);
-                uploadCamera();
+                //uploadCamera();
                 downloadCamera();
 
             } else if (requestCode == SELECT_PICTURE) {
                 Uri selectedimageuri = data.getData();
-                camerabutton.setImageURI(selectedimageuri);
+                bitmap = BitmapFactory.decodeFile(selectedimageuri.getPath());
+                //uploadCamera();
+                downloadCamera();
+                //camerabutton.setImageURI(selectedimageuri);
             }
         }
     }

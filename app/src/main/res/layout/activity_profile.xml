@@ -5,6 +5,7 @@
     android:layout_alignParentTop="true"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#ffffff"
     android:padding="20dp">
     <ImageView
         android:layout_marginTop="70dp"

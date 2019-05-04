@@ -38,6 +38,10 @@ public class AddStudentActivity extends AppCompatActivity {
         editID=(EditText)findViewById(R.id.editID);
         editClass=(EditText)findViewById(R.id.editClass);
         editProfessor=(EditText)findViewById(R.id.editProfessor);
+        editProfessor.setText("Dr Elizabeth Diaz");
+        editProfessor.setEnabled(false);
+        editClass.setText("English");
+        editClass.setEnabled(false);
         firebaseAuth = FirebaseAuth.getInstance();
     }
     public boolean onCreateOptionsMenu(Menu menu) {

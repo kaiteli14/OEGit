@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static com.example.oneessay.ProfileActivity.REQUEST_IMAGE_CAPTURE;
 
@@ -135,9 +136,15 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
                                 }
                                 else
-                                {
-                                    newUserRef.child("image").setValue("none");
-                                }
+                                    if(photo_captured == 2)
+                                    {
+                                        newUserRef.child("image").setValue("images/" + name.getText().toString() + ".png");
+                                        uploadCamera();
+                                    }
+                                    else
+                                    {
+                                        newUserRef.child("image").setValue("none");
+                                    }
                                 Toast.makeText(getApplicationContext(), "Registered Succesfully " + email.getText().toString(), Toast.LENGTH_SHORT).show();
 
                                 progressDialog.dismiss();
@@ -206,10 +213,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                     userChoosenTask = "Camera";
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                    //if(result)
-                    //cameraIntent();
-                    // dispatchTakePictureIntent();
-                    //Toast.makeText(ProfileActivity.this,"camera",Toast.LENGTH_SHORT).show();
+
                 } else if (items[item].equals("Gallery")) {
                     userChoosenTask = "Gallery";
                     Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -217,8 +221,6 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                     startActivityForResult(Intent.createChooser(i,
                             "Select Picture"), SELECT_PICTURE);
 
-                    //if(result)
-                    //galleryIntent();
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -226,6 +228,8 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         });
         builder.show();
     }
+
+    InputStream imageStream;
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -238,8 +242,16 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
 
             } else if (requestCode == SELECT_PICTURE) {
                 Uri selectedimageuri = data.getData();
-                imageView.setImageURI(selectedimageuri);
-                photo_captured = 1;
+                try {
+                    imageStream = getContentResolver().openInputStream(selectedimageuri);
+                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    imageView.setImageBitmap(bitmap);
+                    photo_captured = 2;
+                }
+                catch (Exception w)
+                {
+                    w.printStackTrace();
+                }
             }
         }
     }

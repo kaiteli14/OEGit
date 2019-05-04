@@ -1,6 +1,7 @@
 package com.example.oneessay;
 
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -11,13 +12,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,8 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     EssayActivity activity, updateActivity;
+    private ProgressDialog progressDialog;
 
     LinearLayout container;
 
@@ -44,17 +44,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView essaytopic, currentstudent, nextstudent, nextinline, time, noactiveessay;
     EditText essaycontent;
 
-    CountDownTimer myCountDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressDialog = new ProgressDialog(this);
 
         essaytopic = (TextView) findViewById(R.id.essaytopic);
         essaycontent = (EditText) findViewById(R.id.essaycontentText);
         currentstudent = (TextView) findViewById(R.id.currentstudent);
-        nextstudent = (TextView) findViewById(R.id.nextStudent);
+        //nextstudent = (TextView) findViewById(R.id.nextStudent);
         nextinline = (TextView) findViewById(R.id.nextInLine);
         time = (TextView) findViewById(R.id.time);
 
@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             essaycontent.setText(activity.getEssaycontent());
             currentstudent.setText(activity.getCurrentstudent().getName());
             time.setText(activity.getTime());
-            //nextinline.setText("Next in Line: " + activity.getNextstudents().get(0).getName());
             if (activity.getNextstudents().size() > 0) {
                 nextinline.setText("Next in Line: " + activity.getNextstudents().get(0).getName());
             } else {
@@ -97,139 +96,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             noactiveessay.setVisibility(View.VISIBLE);
             container.setVisibility(View.GONE);
+
         }
-////Archived code
-//   System.out.println(LoginActivity.currentUser.getEmail()+" "+activity.getCurrentstudent().getEmail());
-//    if(!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail()))
-//    {
-//        essaycontent.setEnabled(false);
-//        LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-//
-//                while(iterator.hasNext()){
-//                    DataSnapshot s = iterator.next();
-//                    updateActivity = s.getValue(EssayActivity.class);
-//                    if(updateActivity.getStatus())
-//                        break;
-//                }
-//
-//                time.setText(updateActivity.getTime());
-//                essaycontent.setText(updateActivity.getEssaycontent());
-//
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    else {
-//
-//        essaycontent.setEnabled(true);
-//
-//        new CountDownTimer(300000, 1000) {
-//
-//            public void onTick(long millisUntilFinished) {
-//                time.setText((millisUntilFinished / 1000) + "");
-//
-//                essayActivityRef = LoginActivity.mRootRef.child("activity")
-//                        .child(activity.getId());
-//
-//                essayActivityRef.child("time").setValue((millisUntilFinished / 1000) + "");
-//                essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
-//            }
-//
-//            public void onFinish() {
-//                essaycontent.setEnabled(false);
-//
-//                essayActivityRef = LoginActivity.mRootRef.child("activity")
-//                        .child(activity.getId());
-//                essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
-//
-//                if(activity.getNextstudents().size()>0) {
-//                    essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
-//                    activity.getNextstudents().remove(0);
-//                    essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
-//                    //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-//                    //startActivity(intent);
-//
-//                }
-//                else
-//                {
-//                    essayActivityRef.child("status").setValue(Boolean.FALSE);
-//                    //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-//                    //startActivity(intent);
-//
-//                }
-//            }
-//        }.start();
-
-    }
-    private void hideItem()
-    {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-
-            inflater.inflate(R.menu.main, menu);
-
-
-        return true;
-    }
+    String nowCurrentStudentName;
 
     private void initMainActivity() {
-        if (!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail())) {
+
+        nowCurrentStudentName = LoginActivity.currentUser.getEmail();
+
+        if(!LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail()))
+        {
             essaycontent.setEnabled(false);
             LoginActivity.mRootRef.child("activity").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(LoginActivity.currentUser.getEmail().equals(activity.getCurrentstudent().getEmail())){
-                        essaycontent.setEnabled(true);
-                    }
+
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
 
-                    while (iterator.hasNext()) {
+                    while(iterator.hasNext()){
                         DataSnapshot s = iterator.next();
                         updateActivity = s.getValue(EssayActivity.class);
-                        if (updateActivity.getStatus())
+                        if(updateActivity.getStatus())
                             break;
                     }
+
 
                     time.setText(updateActivity.getTime());
                     essaycontent.setText(updateActivity.getEssaycontent());
 
-                }
 
+                   // activity = updateActivity;
+                    LoginActivity.activity=updateActivity;
+                    if(nowCurrentStudentName.equals(updateActivity.getCurrentstudent().getEmail()) && LoginActivity.changecount == 0)
+                    {
+                        LoginActivity.changecount = 1;
+                        nowCurrentStudentName = updateActivity.getCurrentstudent().getName();
+
+                        Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+                }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
 
-        } else {
+        }
+
+        else {
 
             essaycontent.setEnabled(true);
 
-            myCountDownTimer = new CountDownTimer(90000, 1000) {
+            new CountDownTimer(300000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
-
-                    NumberFormat f = new DecimalFormat("00");
-                    long hour = (millisUntilFinished / 3600000) % 24;
-                    long min = (millisUntilFinished / 60000) % 60;
-                    long sec = (millisUntilFinished / 1000) % 60;
-                    String temp = f.format(hour) + ":" + f.format(min) + ":" + f.format(sec);
-
-                    time.setText(temp);
+                    time.setText((millisUntilFinished / 1000) + "");
 
                     essayActivityRef = LoginActivity.mRootRef.child("activity")
                             .child(activity.getId());
@@ -240,22 +167,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 public void onFinish() {
                     essaycontent.setEnabled(false);
-
                     essayActivityRef = LoginActivity.mRootRef.child("activity")
                             .child(activity.getId());
                     essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
 
-                    if (activity.getNextstudents().size() > 0) {
+                    if(activity.getNextstudents().size()>0) {
                         essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
                         activity.getNextstudents().remove(0);
                         essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
-                        //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                        //startActivity(intent);
 
-                    } else {
+                        progressDialog.setMessage(" in");
+                        progressDialog.show();
+
+                        Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        progressDialog.dismiss();
+
+                    }
+                    else
+                    {
                         essayActivityRef.child("status").setValue(Boolean.FALSE);
-                        //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                        //startActivity(intent);
+
+                        progressDialog.setMessage("Logging in");
+                        progressDialog.show();
+
+                        essaycontent.setEnabled(Boolean.FALSE);
+
+                        Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                        progressDialog.dismiss();
 
                     }
                 }
@@ -264,63 +207,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
+    // System.out.println(LoginActivity.currentUser.getEmail()+" "+activity.getCurrentstudent().getEmail());
+
     public void onClickSubmit(View view) {
-        myCountDownTimer.cancel();
-        essaycontent.setEnabled(false);
+        //essaycontent.setEnabled(false);
         essayActivityRef = LoginActivity.mRootRef.child("activity")
                 .child(activity.getId());
         essayActivityRef.child("essaycontent").setValue(essaycontent.getText().toString());
-        if (activity.getNextstudents().size() > 0) {
+        if(activity.getNextstudents().size()>0) {
+
             essayActivityRef.child("currentstudent").setValue(activity.getNextstudents().get(0));
             activity.getNextstudents().remove(0);
             essayActivityRef.child("nextstudents").setValue(activity.getNextstudents());
-            // Intent intent = new Intent(MainActivity.this,MainActivity.class);
-            //startActivity(intent);
-        } else {
+
+            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
             essayActivityRef.child("status").setValue(Boolean.FALSE);
-            //Intent intent = new Intent(MainActivity.this,MainActivity.class);
-            //startActivity(intent);
+            essaycontent.setEnabled(Boolean.FALSE);
+            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
 
         }
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.logout) {
-
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
-
-            builder.setTitle("ONE ESSAY");
-            builder.setMessage("Are you sure you want to log out?");
-
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    dialog.dismiss();
-                }
-
-            });
-
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Do nothing
-                    dialog.dismiss();
-                }
-            });
-
-            android.app.AlertDialog alert = builder.create();
-            alert.show();
-            return true;
-        }
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item))
+        {
             return true;
         }
 
@@ -329,22 +250,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+        switch (menuItem.getItemId())
+        {
             case R.id.Profile:
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent intent=new Intent(MainActivity.this,ProfileActivity.class);
                 startActivity(intent);
                 break;
             case R.id.Status:
-                Intent intentStatus = new Intent(MainActivity.this, StatusActivity.class);
+                Intent intentStatus=new Intent(MainActivity.this,StatusActivity.class);
                 startActivity(intentStatus);
                 break;
             case R.id.add:
-                Intent intentAdd = new Intent(MainActivity.this, ProfessorHomePageActivity.class);
+                Intent intentAdd=new Intent(MainActivity.this,ProfessorHomePageActivity.class);
                 startActivity(intentAdd);
                 break;
 
             case R.id.logout:
-                Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intentLogout=new Intent(MainActivity.this,LoginActivity.class);
 
                 LoginActivity.currentUser = null;
                 LoginActivity.activity = null;

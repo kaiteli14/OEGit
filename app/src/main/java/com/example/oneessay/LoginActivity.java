@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText User;
     private EditText Password;
+    public static int changecount=0;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickSignUp(View view) {
         Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void onClickLogin(View view) {
@@ -102,11 +104,15 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         LoginActivity.currentUser = user;
 
-                        if (user.getEmail().equals("p@gmail.com"))
+                        if (user.getEmail().equals("p@gmail.com")) {
                             startActivity(new Intent(LoginActivity.this, ProfessorHomePageActivity.class));
+                            finish();
+                        }
 
-                        else
+                        else {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
 
                     } else {
                         progressDialog.dismiss();
@@ -140,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,ForgotPassword.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

@@ -7,39 +7,53 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class EssayTopicsAdapter extends ArrayAdapter<String> {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-    private final Context context;
-    private final String[] values;
+public class EssayTopicsAdapter extends ArrayAdapter<Essay> {
 
-    public static String selectedTopic = "None";
+    private Context context;
+    private List<Essay> values;
 
-    public EssayTopicsAdapter(Context context,String[] values)
-    {
+    private HashMap<String,String> tempMap;
+
+    public static Essay selectedTopic = new Essay("0","None");
+
+    public EssayTopicsAdapter(Context context, ArrayList<Essay> values) {
         super(context, R.layout.row_essaytopic, values);
         this.context = context;
         this.values = values;
+        tempMap = new HashMap<String, String>();
+
+        for(int i = 0;i<values.size();i++)
+        {
+            tempMap.put(values.get(i).getTopic(),values.get(i).getId());
+        }
+
     }
 
     TextView essayText;
+    ImageView minus;
     View rowView;
 
-    int loc=0;
+    int loc = 0;
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         rowView = convertView;
-        rowView = (rowView == null) ? inflater.inflate(R.layout.row_essaytopic,parent,false) : rowView ;
+        rowView = (rowView == null) ? inflater.inflate(R.layout.row_essaytopic, parent, false) : rowView;
 
         essayText = (TextView) rowView.findViewById(R.id.essayrow_topic);
-        essayText.setText(values[position]);
+
+        essayText.setText(values.get(position).getTopic());
 
         essayText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,23 +72,14 @@ public class EssayTopicsAdapter extends ArrayAdapter<String> {
 
                 temp.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 temp.setTextColor(Color.WHITE);
-                selectedTopic = temp.getText().toString();
+                selectedTopic.setId(tempMap.get(temp.getText().toString()));
+                selectedTopic.setTopic(temp.getText().toString());
 
                 loc = lv.getPositionForView(parentRow);
 
             }
         });
 
-
-        //FOR REMOVING THE TOPIC
-        final Button delete = (Button) rowView.findViewById(R.id.deletetopicbutton);
-        delete.setTag(position);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notifyDataSetChanged();
-            }
-        });
 
         notifyDataSetChanged();
 

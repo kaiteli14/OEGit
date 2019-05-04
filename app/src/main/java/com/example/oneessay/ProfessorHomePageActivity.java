@@ -54,7 +54,6 @@ public class ProfessorHomePageActivity extends AppCompatActivity {
 
 
         studentListView = (ListView) findViewById(R.id.studentlist);
-        //new Jolly(ProfessorHomePageActivity.this).execute(10);
         studentList = new ArrayList<String>();
 
         LoginActivity.mRootRef.child("student").addValueEventListener(new ValueEventListener() {
@@ -73,6 +72,7 @@ public class ProfessorHomePageActivity extends AppCompatActivity {
 
                 ArrayAdapter adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, studentList);
                 if (studentList.size() > 0) {
+                    studentListView.setNestedScrollingEnabled(true);
                     studentListView.setAdapter(adapter);
                 }
 

@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".DisplayTopicActivity">
 
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Topics"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="45sp"
         android:id="@+id/topics"
@@ -23,11 +31,26 @@
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
         android:layout_toRightOf="@+id/topics"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/floating_action_button"
+        app:backgroundTint="@android:color/background_light" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_toRightOf="@+id/floatingActionButton"
         android:clickable="true"
         app:backgroundTint="@android:color/background_light"
         android:scaleType="fitXY"
-        android:src="@drawable/floating_action_button"/>
+        android:src="@android:drawable/btn_minus"/>
 
 
     <ListView
@@ -60,6 +83,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/startessaybutton"
         />
+
 
 
 </RelativeLayout>
