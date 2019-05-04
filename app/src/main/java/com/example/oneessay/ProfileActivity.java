@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,19 +75,19 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         displayProfile();
-        //continuebutton= (Button) view.findViewById(R.id.continuebutton);
-        /*camerabutton = (ImageView) findViewById(R.id.profileimage);
-        camerabutton.setEnabled(true);
-        camerabutton.setVisibility(View.VISIBLE);
-        camerabutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                selectImage();
-//                   DialogFragment newFragment = new ImageOptionsLearner();
-//                   newFragment.show(getActivity().getSupportFragmentManager(), "images");
-            }
-        });*/
+//        continuebutton= (Button) view.findViewById(R.id.continuebutton);
+//        camerabutton = (ImageView) findViewById(R.id.profileimage);
+//        camerabutton.setEnabled(true);
+//        camerabutton.setVisibility(View.VISIBLE);
+//        camerabutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                selectImage();
+//                  DialogFragment newFragment = new ImageOptionsLearner();
+//                  newFragment.show(getActivity().getSupportFragmentManager(), "images");
+//            }
+//        });
 
     }
     public boolean onCreateOptionsMenu(Menu menu) {
